@@ -4,6 +4,9 @@ A simple console application that tells you what to do when you're too indecisiv
 Tasks are structured like folders and files, where you can add subtasks inside another task.
 When choosing a task, the program will only choose tasks that do not contain any subtasks (i.e. leaf tasks)
 
+## Download
+From the [latest release](https://github.com/tytia/tell-me-what-to-do/releases/tag/v1.0.0), download "Tell-me-what-to-do.zip".
+
 ## Start menu
 Here you can choose to edit your tasks or change the timer length.
 ![start menu](readme-images/start_menu.png)
