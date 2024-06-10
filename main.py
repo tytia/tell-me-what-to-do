@@ -13,7 +13,7 @@ def start_menu() -> None:
     
     actions = [
         Action("Tell me what to do!", lambda: [pick_random_task(TASKS), start_menu()]), 
-        Action("Show tasks", task_menu),
+        Action("Edit tasks", task_menu),
         Action(f"Change timer length (currently {timer.format_seconds_duration(timer.get_length())})", lambda: [change_timer_length(), start_menu()])
     ]
     
