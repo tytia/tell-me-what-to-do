@@ -1,4 +1,4 @@
-import timer, storage
+import timer, storage, ctypes
 from actions import *
 from art import tprint
 
@@ -52,4 +52,8 @@ def print_title() -> None:
 
 
 if __name__ == "__main__":
+    # disable quick edit mode https://stackoverflow.com/questions/37500076/how-to-enable-windows-console-quickedit-mode-from-python
+    kernel32 = ctypes.windll.kernel32
+    kernel32.SetConsoleMode(kernel32.GetStdHandle(-10), 128)
+    
     start_menu()
