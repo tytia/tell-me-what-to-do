@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Tuple
 from os import system, name
 from collections import namedtuple
 from data_structures.task_tree import TaskTree
@@ -13,10 +13,11 @@ def clear_screen() -> None:
     """
     system('cls' if name == 'nt' else 'clear')
 
-def process_actions(actions: list[Action], input_prompt: str = "", cancellable: bool = True) -> None:
+def process_actions(actions: list[Action], task_info: Tuple[TaskTree, set[str]] = (None, set()), menu_func = None, cancellable: bool = True) -> None:
     """
     Processes a list of actions, displaying them to the user and
-    executing the chosen one.
+    executing the chosen one. If any tasks are provided, should the user
+    enter a task's id, that task will be selected.
     """
     action_map = dict()
     for i in range(len(actions)):
@@ -25,9 +26,15 @@ def process_actions(actions: list[Action], input_prompt: str = "", cancellable: 
         print(f"{key}. {action.description}")
     print()
 
+    tasks, task_ids = task_info
     action_map["q"] = Action("", sys.exit) # hidden quit action
-    choice = get_valid_input(lambda x: x in action_map, input_prompt, cancellable)
-    action_map[choice].function()
+    choice = get_valid_input(lambda x: x in action_map or x in task_ids, cancellable=cancellable)
+
+    if choice in task_ids:
+        tasks.into(choice)
+        menu_func()
+    else:
+        action_map[choice].function()
 
 def pick_random_task(tasks: TaskTree) -> None:
     clear_screen()
@@ -62,11 +69,6 @@ def rename_task(tasks: TaskTree, task_ids: set[str]) -> None:
         if new_name:
             tasks.rename(task_id, new_name)
             storage.save(tasks)
-
-def select_task(tasks: TaskTree, task_ids: set[str]) -> None:
-    task_id = get_valid_input(lambda x: x in task_ids, "Enter task number to select: ")
-    if task_id:
-        tasks.into(task_id)
 
 def change_timer_length() -> None:
     new_length = get_valid_input(lambda x: x.isdecimal(), "Enter new timer length in minutes: ")

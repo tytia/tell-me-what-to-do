@@ -25,6 +25,7 @@ def task_menu(show_all: bool = False) -> None:
     If show_all is True, all subtasks from the current task are shown recursively.
     """
     print_title()
+    print("Enter a task's number to select it.\n")
     path = TASKS.path_str()
     if path: print(path)
     task_ids = TASKS.print_tasks(show_all)
@@ -35,7 +36,6 @@ def task_menu(show_all: bool = False) -> None:
         Action("Add task", lambda: [add_task(TASKS), task_menu(show_all)]),
         Action("Remove task", lambda: [remove_task(TASKS, task_ids), task_menu(show_all)]),
         Action("Rename task", lambda: [rename_task(TASKS, task_ids), task_menu(show_all)]),
-        Action("Select task", lambda: [select_task(TASKS, task_ids), task_menu(show_all)]),
         Action("Collapse all tasks", task_menu) if show_all else Action("Expand all tasks", lambda: task_menu(show_all=True))
     ]
     if not TASKS.at_root(): actions += [
@@ -44,7 +44,7 @@ def task_menu(show_all: bool = False) -> None:
         ]
     else: actions.append(Action("Back", start_menu))
 
-    process_actions(actions, cancellable=False)
+    process_actions(actions, task_info=(TASKS, task_ids), menu_func=lambda: task_menu(show_all), cancellable=False)
 
 def print_title() -> None:
     clear_screen()
