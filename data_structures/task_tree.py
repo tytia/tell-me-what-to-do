@@ -112,7 +112,7 @@ class TaskTree:
         task = task if task else self.curr
         for i, subtask in enumerate(task.subtasks, 1):
             task_id = ".".join(path + [str(i)])
-            spacer = " │ " * len(path)
+            spacer = " │  " * len(path)
             if subtask.subtasks:
                 print(f"{spacer} {task_id}. {subtask.name} ►")
                 task_ids.update(self._print_tasks_recursive(subtask, path + [str(i)]))
