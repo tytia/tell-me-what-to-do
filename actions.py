@@ -36,7 +36,7 @@ def pick_random_task(tasks: TaskTree) -> None:
         system("pause")
         return
 
-    chosen_task = random.choice(tasks)
+    chosen_task = random.choice(tasks.get_leaves())
     print("Chosen task:")
     path = tasks.path_str(chosen_task)
     if path: print(path)

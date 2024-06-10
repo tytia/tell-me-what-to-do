@@ -123,6 +123,20 @@ class TaskTree:
         
         return task_ids
     
+    def get_leaves(self, task: TaskNode = None) -> list[TaskNode]:
+        """
+        Returns a list of the leaf tasks of the current task or optionally a specified task.
+        """
+        task = task if task else self.curr
+        leaves = []
+        for subtask in task.subtasks:
+            if subtask.subtasks:
+                leaves.extend(self.get_leaves(subtask))
+            else:
+                leaves.append(subtask)
+        
+        return leaves
+    
     def get_path(self, task: TaskNode = None) -> Iterator[str]:
         """
         Returns an iterator for the path to the current task or optionally a specified task.
@@ -179,4 +193,4 @@ if __name__ == "__main__":
     x.back()
     x.back()
 
-    print(x._print_tasks_recursive())
+    print([x.name for x in x.get_leaves()])
