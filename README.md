@@ -1,7 +1,7 @@
 # Tell me what to do
 A simple console application that tells you what to do when you're too indecisive.  
   
-Tasks are structured like folders and files, where you can add subtasks inside another task.
+Tasks are structured like a file tree, where you can add subtasks inside any task.
 When choosing a task, the program will only choose tasks that do not contain any subtasks (i.e. leaf tasks)
 
 ## Download
