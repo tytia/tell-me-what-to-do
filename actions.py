@@ -2,7 +2,7 @@ from typing import Callable
 from os import system, name
 from collections import namedtuple
 from data_structures.task_tree import TaskTree
-import string, random, storage, settings, timer
+import sys, string, random, storage, settings, timer
 
 Action = namedtuple("Action", ["description", "function"])
 ALPHABET = list(string.ascii_lowercase)
@@ -11,7 +11,7 @@ def clear_screen() -> None:
     """
     Clears the screen.
     """
-    system('cls' if name=='nt' else 'clear')
+    system('cls' if name == 'nt' else 'clear')
 
 def process_actions(actions: list[Action], input_prompt: str = "", cancellable: bool = True) -> None:
     """
@@ -25,12 +25,17 @@ def process_actions(actions: list[Action], input_prompt: str = "", cancellable: 
         print(f"{key}. {action.description}")
     print()
 
-    action_map["q"] = Action("", quit) # hidden quit action
+    action_map["q"] = Action("", sys.exit) # hidden quit action
     choice = get_valid_input(lambda x: x in action_map, input_prompt, cancellable)
     action_map[choice].function()
 
 def pick_random_task(tasks: TaskTree) -> None:
     clear_screen()
+    if len(tasks) == 0:
+        print("No tasks to choose from.")
+        system("pause")
+        return
+
     chosen_task = random.choice(tasks)
     print("Chosen task:")
     path = tasks.path_str(chosen_task)
@@ -90,7 +95,7 @@ def get_valid_input(condition: Callable[[str], bool] = None, prompt: str = "", c
 
     except KeyboardInterrupt:
         if not cancellable:
-            quit()
+            sys.exit()
 
 
 if __name__ == "__main__":
